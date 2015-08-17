@@ -1,0 +1,33 @@
+{
+  "name": "jotun",
+  "version": "0.0.1",
+  "description": "convert objects to number arrays",
+  "main": "build/jotun.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify index.js -t babelify --outfile build/jotun.js",
+    "demo": "browserify example/example.es6.js -t babelify --outfile example/example.js && node example/example.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techfort/jotun.git"
+  },
+  "keywords": [
+    "convert",
+    "array",
+    "number",
+    "object",
+    "serialize"
+  ],
+  "author": "joe minichino <joe.minichino@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/techfort/jotun/issues"
+  },
+  "homepage": "https://github.com/techfort/jotun#readme",
+  "devDependencies": {
+    "babelify": "^6.1.3",
+    "browserify": "^11.0.1",
+    "ramda": "^0.17.1"
+  }
+}
