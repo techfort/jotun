@@ -41,19 +41,19 @@ list.forEach(function (obj) {
   console.log(convert(obj));
 });
 
-console.log(jotun.converter()({
+console.log.apply(console, ['converting:\n  {\n    a: {\n      b: \'c\',\n      d: true\n    },\n    c: [1, 2, 3]\n  } ->\n  ', jotun.converter()({
   a: {
     b: 'c',
-    d: true
+    d: true,
+    udef: undefined
   },
   c: [1, 2, 3]
-}));
+})]);
 
 },{"../index":2,"mimir":3}],2:[function(require,module,exports){
 'use strict';
 
 (function () {
-  //var R = require('ramda');
 
   function _makeFlat(recursive) {
     return function flatt(list) {
@@ -114,6 +114,9 @@ console.log(jotun.converter()({
     'Date': dateToNumber,
     'Number': numberToNumber,
     'Array': arrayToNumberArray,
+    'undefined': function undefined() {
+      return 0;
+    },
     'Object': converter({})
   };
 
@@ -125,7 +128,7 @@ console.log(jotun.converter()({
 
     return function (obj) {
       return flatten(Object.keys(obj).map(function (key) {
-        return map[key] ? map[key](obj[key]) : converters[obj[key].constructor.name](obj[key]);
+        return map[key] ? map[key](obj[key]) : !!obj[key] ? converters[obj[key].constructor.name](obj[key]) : 0;
       }));
     };
   }

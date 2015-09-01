@@ -34,10 +34,23 @@ list.forEach(obj => {
   console.log(convert(obj));
 });
 
-console.log(jotun.converter()({
-  a: {
-    b: 'c',
-    d: true
-  },
-  c: [1, 2, 3]
-}));
+console.log(...[
+  `converting:
+  {
+    a: {
+      b: 'c',
+      d: true,
+      udef: undefined
+    },
+    c: [1, 2, 3]
+  } ->
+  `,
+  jotun.converter()({
+    a: {
+      b: 'c',
+      d: true,
+      udef: undefined
+    },
+    c: [1, 2, 3]
+  })
+]);

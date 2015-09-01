@@ -55,6 +55,7 @@
     'Date': dateToNumber,
     'Number': numberToNumber,
     'Array': arrayToNumberArray,
+    'undefined': () => 0,
     'Object': converter({})
   };
 
@@ -68,8 +69,8 @@
       Object
       .keys(obj)
       .map(key =>
-        map[key] ? map[key](obj[key]) : converters[obj[key].constructor.name](obj[key]))
-    );
+        map[key] ? map[key](obj[key]) : (!!obj[key] ? converters[obj[key].constructor.name](obj[key]) : 0)
+      ));
 
   }
 
