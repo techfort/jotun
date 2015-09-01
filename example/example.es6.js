@@ -33,3 +33,11 @@ let convert = jotun.converter({
 list.forEach(obj => {
   console.log(convert(obj));
 });
+
+console.log(jotun.converter()({
+  a: {
+    b: 'c',
+    d: true
+  },
+  c: [1, 2, 3]
+}));

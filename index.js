@@ -1,5 +1,30 @@
 (function () {
-  var R = require('ramda');
+
+  function _makeFlat(recursive) {
+    return function flatt(list) {
+      var value, result = [],
+        idx = 0,
+        j, ilen = list.length,
+        jlen;
+      while (idx < ilen) {
+        if (Array.isArray(list[idx])) {
+          value = recursive ? flatt(list[idx]) : list[idx];
+          j = 0;
+          jlen = value.length;
+          while (j < jlen) {
+            result[result.length] = value[j];
+            j += 1;
+          }
+        } else {
+          result[result.length] = list[idx];
+        }
+        idx += 1;
+      }
+      return result;
+    }
+  }
+
+  var flatten = _makeFlat(true);
 
   function stringToNumber(str) {
     return str.length;
@@ -29,7 +54,8 @@
     'Boolean': booleanToNumber,
     'Date': dateToNumber,
     'Number': numberToNumber,
-    'Array': arrayToNumberArray
+    'Array': arrayToNumberArray,
+    'Object': converter({})
   };
 
   function converter(map) {
@@ -38,7 +64,7 @@
       map = {};
     }
 
-    return obj => R.flatten(
+    return obj => flatten(
       Object
       .keys(obj)
       .map(key =>
