@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Jotun by techfort</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Jotun</h1>
+      <h2 class="project-tagline">convert javascript object to numerical representation (VSM)</h2>
+      <a href="https://github.com/techfort/jotun" class="btn">View on GitHub</a>
+      <a href="https://github.com/techfort/jotun/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/techfort/jotun/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="jotun" class="anchor" href="#jotun" aria-hidden="true"><span class="octicon octicon-link"></span></a>jotun</h1>
+
+<p>convert javascript object to numerical 1-D array (vector) representation</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Rhinegold_and_the_Valkyries_p_032.jpg/470px-Rhinegold_and_the_Valkyries_p_032.jpg" alt="jotun"></p>
+
+<p>Jotun is the (anglicized) term used to describe the race of Giants living in Jotunheimr, one of the nine worlds in Norse mythology.
+In this case it also means Javascript Objects To Numbers (however <code>jotn</code> sounded stupid and was only one <code>u</code>  away from keeping in line with all the other norse-themed repositories I have).</p>
+
+<h2>
+<a id="but-why" class="anchor" href="#but-why" aria-hidden="true"><span class="octicon octicon-link"></span></a>but why????</h2>
+
+<p>Why on Midgard would you want to turn objects into vectors?</p>
+
+<ol>
+<li>because a vector can be used in machine learning.</li>
+</ol>
+
+<p>Pretty much that's it, but you can also use it for serialization purposes, or even create <code>ArrayBuffer</code>s to be used in <code>TypedArray</code>s so you can use <code>DataView</code>s?</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>usage</h2>
+
+<p>Simple enough:</p>
+
+<pre><code>let jotun = require('jotun'),
+  convert = jotun.converter();
+
+let vector = convert({ foo: 'bar', quux: [2, 3, 4]});
+// print [3, 2, 3, 4]
+</code></pre>
+
+<h3>
+<a id="default-conversion" class="anchor" href="#default-conversion" aria-hidden="true"><span class="octicon octicon-link"></span></a>default conversion</h3>
+
+<p><code>jotun</code> will turn your objects into vectors with default converters following this behaviour:</p>
+
+<ol>
+<li>numbers will be left untouched (except for NaN and Infinity)</li>
+<li>strings will be converted to their length</li>
+<li>booleans will be converted to 1 (true) and 0 (false)</li>
+<li>Dates will be converted to their getTime() value</li>
+<li>Objects will be converted to an array in which primitives are converted according to the above</li>
+<li>undefined will turn to 0</li>
+</ol>
+
+<p>The final resulting array will be flattened. </p>
+
+<h3>
+<a id="custom-conversions" class="anchor" href="#custom-conversions" aria-hidden="true"><span class="octicon octicon-link"></span></a>custom conversions</h3>
+
+<p>You may want to cater for special cases, like NaN or Infinity or undefined.
+You can specify a map which defines the conversion behaviour. All you need to do is associate a conversion function for the object property. For instance, <code>example/example.es6.js</code> includes a conversion of text into bag-of-words vector representation:</p>
+
+<pre><code>let jotun = require('../index'),
+  mimir = require('mimir');
+
+let list = [{
+  name: 'joe',
+  age: 40,
+  dob: new Date(1975, 1, 28),
+  description: 'a javascript programmer that loves heavy metal',
+  contractor: true,
+  code: {
+    languages: ['javascript', 'java', 'c++'],
+    foo: 'bar'
+  }
+}, {
+  name: 'jack',
+  age: 25,
+  dob: new Date(1990, 2, 20),
+  description: 'an ios programmer that pretends to like jazz',
+  contractor: false,
+  code: {
+    languages: ['objective-c', 'some other hipsteria language', 'ruby'],
+    foo: 'bar'
+  }
+}];
+
+let dict = mimir.dict(list.map(o =&gt; o.description));
+
+let convert = jotun.converter({
+  description: description =&gt; mimir.bow(description, dict),
+  code: jotun.converter({})
+});
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/techfort/jotun">Jotun</a> is maintained by <a href="https://github.com/techfort">techfort</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
